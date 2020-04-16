@@ -1,4 +1,4 @@
-# Unity Android samples for Surface Duo samples
+# Unity Android samples for Surface Duo
 
 Samples for Unity that adapt to the dual-screen display of the Surface Duo.
 
