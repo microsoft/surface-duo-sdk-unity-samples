@@ -1,8 +1,29 @@
+---
+page_type: sample
+name: Surface Duo - Unity SDK samples
+languages:
+- csharp
+products:
+- surface-duo
+description: "Samples showing how to use the Surface Duo SDK with for Unity game development."
+urlFragment: all
+---
 # Unity Android samples for Surface Duo
 
 Samples for Unity that adapt to the dual-screen display of the Surface Duo.
 
 Download the [Surface Duo SDK](https://docs.microsoft.com/dual-screen/android/get-duo-sdk) (which includes the emulator preview) to get started.
+
+## Related links
+
+- [SDK open-source code](https://github.com/microsoft/surface-duo-sdk)
+- [SDK samples (Kotlin)](https://github.com/microsoft/surface-duo-sdk-samples-kotlin)
+- [SDK samples (Java)](https://github.com/microsoft/surface-duo-sdk-samples)
+- [App samples](https://github.com/microsoft/surface-duo-app-samples)
+- [Xamarin samples](https://github.com/microsoft/surface-duo-sdk-xamarin-samples)
+- [Flutter samples](https://github.com/microsoft/surface-duo-sdk-samples-flutter)
+- [React Native samples](https://github.com/microsoft/react-native-dualscreen)
+- Web samples are coming soon
 
 ## Contributing
 
