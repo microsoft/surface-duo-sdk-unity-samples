@@ -1,6 +1,6 @@
 ---
 page_type: sample
-name: Surface Duo - Unity SDK samples
+name: "Surface Duo - Unity SDK samples"
 languages:
 - csharp
 products:
