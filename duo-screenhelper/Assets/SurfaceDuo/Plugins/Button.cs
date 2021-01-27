@@ -44,7 +44,7 @@ public class Button : MonoBehaviour
         }
 #endif
         
-        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 1, 200, 20), "-Unity for Surface Duo-", localStyle);
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 1, 200, 20), "-Unity (2019.4) for Surface Duo-", localStyle);
         
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 3, 200, 20), "Unity screen orientation:", localStyle);
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 4, 400, 20), "-DeviceHelper-", localStyle);
@@ -100,6 +100,8 @@ public class Button : MonoBehaviour
             catch (System.Exception e)
             {
                 Debug.LogWarning("ScreenHelper.IsDualMode: " + e);
+                localStyle.fontSize = 24; // to read the exception message
+                GUI.Label(new Rect(200, ROW_HEIGHT * 7, 400, 20), e.ToString(), localStyle);
             }
 
             try

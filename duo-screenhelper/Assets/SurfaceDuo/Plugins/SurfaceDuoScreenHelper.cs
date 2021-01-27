@@ -52,32 +52,33 @@ namespace Microsoft.Device.Display
 
     /// <summary>
     /// Surface Duo ScreenHelper class.
-    /// Call <see cref="DeviceHelper.IsDualScreenDevice"/> before using methods on this class.
+    /// IMPORTANT: call <see cref="DeviceHelper.IsDualScreenDevice"/> before using methods on this class.
     /// </summary>
     /// <remarks>
-    /// Requires gradle updates:
-    /// 
-    /// allprojects { repositories {
-    /// maven {
-    ///     url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
-    /// }
-    /// 
-    /// and 
+    /// Requires updates to mainTemplate.gradle (the package is in jcenter):
     /// 
     /// dependencies {
+    ///     implementation "com.microsoft.device.dualscreen:screenmanager-displaymask:1.0.0-beta1"
     ///     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
-    ///     implementation "com.microsoft.device:dualscreen-layout:0.9.0"
     /// }
     /// 
     /// Docs:
-    /// https://docs.microsoft.com/dual-screen/android/api-reference/dualscreen-layout#screenhelper
+    /// https://docs.microsoft.com/dual-screen/android/api-reference/dualscreen-library/core/screen-info
     /// </remarks>
     public class ScreenHelper
     {
         /// <summary>
-        /// com.microsoft.device.dualscreen.layout.ScreenHelper
+        /// com.microsoft.device.dualscreen.ScreenInfo
         /// </summary>
-        static string SCREENHELPER_CLASSNAME = "com.microsoft.device.dualscreen.layout.ScreenHelper";
+        /// <remarks>_was_ com.microsoft.device.dualscreen.layout.ScreenHelper</remarks>
+        [Obsolete("The class is obtained by the provider now")]
+        static string SCREENHELPER_CLASSNAME = "com.microsoft.device.dualscreen.ScreenInfo";
+
+        /// <summary>
+        /// com.microsoft.device.dualscreen.ScreenInfoProvider
+        /// </summary>
+        /// <remarks>static class to get a reference to the ScreenInfo object</remarks>
+        static string SCREENINFOPROVIDER_CLASSNAME = "com.microsoft.device.dualscreen.ScreenInfoProvider";
 
         /// <summary>
         /// Determine whether your app is running on a dual-screen device. 
@@ -120,9 +121,10 @@ namespace Microsoft.Device.Display
                 {
                     var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
 
-                    using (var dm = new AndroidJavaClass(SCREENHELPER_CLASSNAME))
+                    using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
                     {
-                        return dm.CallStatic<bool>("isDeviceSurfaceDuo", activity);
+                        var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                        return si.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
                     }
                 });
                 return isDuo;
@@ -143,11 +145,12 @@ namespace Microsoft.Device.Display
         {
             var hinge = OnPlayer.Run(p =>
             {
-                var context = p.GetStatic<AndroidJavaObject>("currentActivity");
+                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
 
-                using (var dm = new AndroidJavaClass(SCREENHELPER_CLASSNAME))
+                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
                 {
-                    return dm.CallStatic<AndroidJavaObject>("getHinge", context);
+                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                    return si.Call<AndroidJavaObject>("getHinge");
                 }
             });
 
@@ -171,9 +174,10 @@ namespace Microsoft.Device.Display
             var isDualMode = OnPlayer.Run(p =>
             {
                 var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var sc = new AndroidJavaClass(SCREENHELPER_CLASSNAME))
+                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
                 {
-                    return sc.CallStatic<bool>("isDualMode", activity);
+                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                    return si.Call<bool>("isDualMode");
                 }
             });
             return isDualMode;
@@ -182,14 +186,16 @@ namespace Microsoft.Device.Display
         /// <summary>
         /// Returns the rotation of the screen - Surface.ROTATION_0 (0), Surface.ROTATION_90 (1), Surface.ROTATION_180 (2), Surface.ROTATION_270 (3)
         /// </summary>
+        /// <remarks>_was_ getCurrentRotation</remarks>
         public static int GetCurrentRotation()
         {
             var rotation = OnPlayer.Run(p =>
             {
                 var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var dm = new AndroidJavaClass(SCREENHELPER_CLASSNAME))
+                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
                 {
-                    return dm.CallStatic<int>("getCurrentRotation", activity);
+                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                    return si.Call<int>("getScreenRotation"); // was getCurrentRotation
                 }
             });
             return rotation;
@@ -202,10 +208,11 @@ namespace Microsoft.Device.Display
         {
             var jScreenRects = OnPlayer.Run(p =>
             {
-                var context = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var dm = new AndroidJavaClass(SCREENHELPER_CLASSNAME))
+                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
                 {
-                    return dm.CallStatic<AndroidJavaObject>("getScreenRectangles", context);
+                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                    return si.Call<AndroidJavaObject>("getScreenRectangles");
                 }
             });
 
