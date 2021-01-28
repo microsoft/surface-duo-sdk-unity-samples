@@ -135,13 +135,6 @@ namespace Microsoft.Device.Display
                 var isDuo = OnPlayer.Run(p =>
                 {
                     return screenInfoObject.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
-                    //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-
-                    //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                    //{
-                    //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                    //    return si.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
-                    //}
                 });
                 return isDuo;
             }
@@ -184,12 +177,6 @@ namespace Microsoft.Device.Display
             var isDualMode = OnPlayer.Run(p =>
             {
                 return screenInfoObject.Call<bool>("isDualMode");
-                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                //{
-                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                //    return si.Call<bool>("isDualMode");
-                //}
             });
             return isDualMode;
         }
@@ -203,12 +190,6 @@ namespace Microsoft.Device.Display
             var rotation = OnPlayer.Run(p =>
             {
                 return screenInfoObject.Call<int>("getScreenRotation"); // was getCurrentRotation
-                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                //{
-                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                //    return si.Call<int>("getScreenRotation"); // was getCurrentRotation
-                //}
             });
             return rotation;
         }
@@ -221,12 +202,6 @@ namespace Microsoft.Device.Display
             var jScreenRects = OnPlayer.Run(p =>
             {
                 return screenInfoObject.Call<AndroidJavaObject>("getScreenRectangles");
-                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                //{
-                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                //    return si.Call<AndroidJavaObject>("getScreenRectangles");
-                //}
             });
 
             var size = jScreenRects.Call<int>("size");
