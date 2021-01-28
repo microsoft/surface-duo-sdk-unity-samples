@@ -8,7 +8,11 @@ products:
 description: "Samples showing how to use the Surface Duo SDK with for Unity game development."
 urlFragment: all
 ---
-# Unity Android samples for Surface Duo
+# Unity 2018.4.25f1 (LTS) archive
+
+This branch exists to preserve a version of the sample that runs in Unity 2018.4.25f1. Visit the `main` branch for the most up-to-date code.
+
+## Unity Android sample for Surface Duo
 
 Samples for Unity that adapt to the dual-screen display of the Surface Duo.
 
