@@ -3,6 +3,7 @@
 using Microsoft.Device.Display;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Button : MonoBehaviour
 {
@@ -58,13 +59,25 @@ public class Button : MonoBehaviour
                                                                  // GetScreenRectangles returns two rows
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 12, 200, 20), "-Sensor-", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 13, 200, 20), "Hinge angle:", localStyle);
-        
+
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 17, 200, 20), "-Pen-", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 200, 20), "Stylus supported:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 19, 200, 20), "Pressure:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 20, 200, 20), "Position:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 21, 200, 20), "Press type:", localStyle);
+
         localStyle.normal.textColor = Color.blue;
 
         // These methods don't require a check for IsDualScreenDevice
         GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 3, 400, 20), Screen.orientation.ToString(), localStyle);
         GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 5, 400, 20), ScreenHelper.IsDualScreenDevice().ToString(), localStyle);
-        
+
+        // Pen support
+        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 18, 400, 20), Input.stylusTouchSupported.ToString(), localStyle);
+        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 19, 400, 20), Pointer.current.pressure.clampConstant.ToString(), localStyle);
+        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 20, 400, 20), $"{Pointer.current.position.x.ReadValue()},{Pointer.current.position.y.ReadValue()}", localStyle);
+        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 21, 400, 20), Pointer.current.press.ToString(), localStyle);
+
         if (DeviceHelper.IsDualScreenDevice())
         {
             try
@@ -162,5 +175,19 @@ public class Button : MonoBehaviour
             GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 15, 400, 20), "(most dual-screen attributes have no value in editor)", localStyle);
         }
 #endif
+    }
+
+
+    float pressure;
+    private void Update()
+    {
+        if (Input.stylusTouchSupported)
+        {
+            pressure = Pointer.current.pressure.clampConstant;
+        }
+        else
+        {
+            pressure = -1;
+        }
     }
 }
