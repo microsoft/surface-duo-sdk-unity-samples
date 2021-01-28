@@ -67,18 +67,33 @@ namespace Microsoft.Device.Display
     /// </remarks>
     public class ScreenHelper
     {
-        /// <summary>
-        /// com.microsoft.device.dualscreen.ScreenInfo
-        /// </summary>
-        /// <remarks>_was_ com.microsoft.device.dualscreen.layout.ScreenHelper</remarks>
-        [Obsolete("The class is obtained by the provider now")]
-        static string SCREENHELPER_CLASSNAME = "com.microsoft.device.dualscreen.ScreenInfo";
+        // <summary>
+        // com.microsoft.device.dualscreen.ScreenInfo
+        // </summary>
+        // <remarks>_was_ com.microsoft.device.dualscreen.layout.ScreenHelper</remarks>
+        //[Obsolete("The class is obtained by the provider now")]
+        //static string SCREENHELPER_CLASSNAME = "com.microsoft.device.dualscreen.ScreenInfo";
 
         /// <summary>
         /// com.microsoft.device.dualscreen.ScreenInfoProvider
         /// </summary>
         /// <remarks>static class to get a reference to the ScreenInfo object</remarks>
         static string SCREENINFOPROVIDER_CLASSNAME = "com.microsoft.device.dualscreen.ScreenInfoProvider";
+        
+        static AndroidJavaObject screenInfoObject;
+        static ScreenHelper()
+        {
+#if !UNITY_EDITOR && UNITY_ANDROID
+            screenInfoObject = OnPlayer.Run(p =>
+            {
+                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
+                {
+                    return sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                }
+            });
+#endif
+        }
 
         /// <summary>
         /// Determine whether your app is running on a dual-screen device. 
@@ -119,13 +134,14 @@ namespace Microsoft.Device.Display
             {
                 var isDuo = OnPlayer.Run(p =>
                 {
-                    var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                    return screenInfoObject.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
+                    //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
 
-                    using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                    {
-                        var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                        return si.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
-                    }
+                    //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
+                    //{
+                    //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                    //    return si.Call<bool>("isSurfaceDuoDevice"); // was isDeviceSurfaceDuo
+                    //}
                 });
                 return isDuo;
             }
@@ -145,13 +161,7 @@ namespace Microsoft.Device.Display
         {
             var hinge = OnPlayer.Run(p =>
             {
-                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-
-                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                {
-                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                    return si.Call<AndroidJavaObject>("getHinge");
-                }
+                return screenInfoObject?.Call<AndroidJavaObject>("getHinge");
             });
 
             if (hinge != null)
@@ -173,12 +183,13 @@ namespace Microsoft.Device.Display
         {
             var isDualMode = OnPlayer.Run(p =>
             {
-                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                {
-                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                    return si.Call<bool>("isDualMode");
-                }
+                return screenInfoObject.Call<bool>("isDualMode");
+                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
+                //{
+                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                //    return si.Call<bool>("isDualMode");
+                //}
             });
             return isDualMode;
         }
@@ -191,12 +202,13 @@ namespace Microsoft.Device.Display
         {
             var rotation = OnPlayer.Run(p =>
             {
-                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                {
-                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                    return si.Call<int>("getScreenRotation"); // was getCurrentRotation
-                }
+                return screenInfoObject.Call<int>("getScreenRotation"); // was getCurrentRotation
+                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
+                //{
+                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                //    return si.Call<int>("getScreenRotation"); // was getCurrentRotation
+                //}
             });
             return rotation;
         }
@@ -208,12 +220,13 @@ namespace Microsoft.Device.Display
         {
             var jScreenRects = OnPlayer.Run(p =>
             {
-                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-                using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
-                {
-                    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
-                    return si.Call<AndroidJavaObject>("getScreenRectangles");
-                }
+                return screenInfoObject.Call<AndroidJavaObject>("getScreenRectangles");
+                //var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
+                //using (var sc = new AndroidJavaClass(SCREENINFOPROVIDER_CLASSNAME))
+                //{
+                //    var si = sc.CallStatic<AndroidJavaObject>("getScreenInfo", activity);
+                //    return si.Call<AndroidJavaObject>("getScreenRectangles");
+                //}
             });
 
             var size = jScreenRects.Call<int>("size");
@@ -482,7 +495,7 @@ namespace Microsoft.Device.Display
             });
 
             return sensor;
-#else   
+#else
             return null;
 #endif
         }
