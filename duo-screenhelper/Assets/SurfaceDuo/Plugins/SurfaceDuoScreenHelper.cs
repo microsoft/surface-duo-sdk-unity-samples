@@ -462,7 +462,7 @@ namespace Microsoft.Device.Display
         /// </summary>
         public static HingeSensor Start()
         {
-#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
             var sensor = OnPlayer.Run(p =>
             {
                 var context = p.GetStatic<AndroidJavaObject>("currentActivity");
