@@ -13,7 +13,7 @@ public class Button : MonoBehaviour
     {
         hingeSensor = HingeSensor.Start();
     }
-
+    
     void OnApplicationQuit()
     {
         hingeSensor?.StopSensing();
@@ -61,7 +61,7 @@ public class Button : MonoBehaviour
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 13, 200, 20), "Hinge angle:", localStyle);
 
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 17, 200, 20), "-Pen-", localStyle);
-        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 200, 20), "Stylus supported:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 200, 20), "Stylus/pressure support:", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 19, 200, 20), "Pressure:", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 20, 200, 20), "Position:", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 21, 200, 20), "Press type:", localStyle);
@@ -73,10 +73,23 @@ public class Button : MonoBehaviour
         GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 5, 400, 20), ScreenHelper.IsDualScreenDevice().ToString(), localStyle);
 
         // Pen support
-        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 18, 400, 20), Input.stylusTouchSupported.ToString(), localStyle);
-        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 19, 400, 20), Pointer.current.pressure.clampConstant.ToString(), localStyle);
-        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 20, 400, 20), $"{Pointer.current.position.x.ReadValue()},{Pointer.current.position.y.ReadValue()}", localStyle);
-        GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 21, 400, 20), Pointer.current.press.ToString(), localStyle);
+        try
+        {
+            GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 18, 400, 20), Input.stylusTouchSupported.ToString() + " / " + Input.touchPressureSupported.ToString() + " / " + Input.touchSupported.ToString(), localStyle);
+            GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 19, 400, 20), Pointer.current.pressure.clampConstant.ToString(), localStyle);
+            GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 20, 400, 20), $"{Pointer.current.position.x.ReadValue()},{Pointer.current.position.y.ReadValue()}", localStyle);
+            GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 21, 400, 20), Pointer.current.press.ToString(), localStyle);
+            // https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Pen.html
+            
+            //GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 23, 400, 20), $"Tip: {Pen.current.tip}", localStyle);
+            //GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 24, 400, 20), $"inRange: {Pen.current.inRange.clamp}", localStyle);
+            //GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 25, 400, 20), $"enabled: {Pen.current.enabled}", localStyle);
+            //GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 26, 400, 20), $"tilt: {Pen.current.tilt.x}, {Pen.current.tilt.y}", localStyle);
+        }
+        catch (Exception e) {
+            GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 23, 400, 20), e.ToString(), localStyle);
+            Debug.LogError(e);
+        }
 
         if (DeviceHelper.IsDualScreenDevice())
         {
@@ -189,5 +202,7 @@ public class Button : MonoBehaviour
         {
             pressure = -1;
         }
+
+        Debug.Log("Pen.current.tip: " + Pen.current.tip.ToString());
     }
 }
