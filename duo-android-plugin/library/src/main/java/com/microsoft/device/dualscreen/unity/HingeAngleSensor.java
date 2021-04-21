@@ -21,8 +21,8 @@ import static androidx.core.content.ContextCompat.getSystemService;
 * https://docs.microsoft.com/dual-screen/android/api-reference/hinge-sensor
 */
 public final class HingeAngleSensor {
-    //private static final String HINGE_ANGLE_SENSOR_TYPE = "microsoft.sensor.hinge_angle"; // unique to Surface Duo
-    private static final String HINGE_ANGLE_SENSOR_NAME = "Hinge Angle"; // works on some other devices/emulators
+    //private static final String HINGE_ANGLE_SENSOR_TYPE = "microsoft.sensor.hinge_angle"; // unique to Surface Duo, use sensor.getStringType()
+    private static final String HINGE_ANGLE_SENSOR_NAME = "Hinge Angle".toLowerCase(); // works on some other devices/emulators, use sensor.getName()
 
     private SensorManager mSensorManager;
     private Sensor mHingeAngleSensor;
@@ -36,7 +36,7 @@ public final class HingeAngleSensor {
             List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 
             for (Sensor sensor : sensorList) {
-                if (sensor.getStringType().contains(HINGE_ANGLE_SENSOR_NAME)) {
+                if (sensor.getName().toLowerCase().contains(HINGE_ANGLE_SENSOR_NAME)) {
                     mHingeAngleSensor = sensor;
                 }
             }
