@@ -44,7 +44,7 @@ public class Button : MonoBehaviour
         }
 #endif
         
-        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 1, 200, 20), "-Unity (2019.4) for Surface Duo-", localStyle);
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 1, 200, 20), "-Unity (2020.3.14) for Surface Duo-", localStyle);
         
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 3, 200, 20), "Unity screen orientation:", localStyle);
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 4, 400, 20), "-DeviceHelper-", localStyle);

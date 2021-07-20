@@ -12,7 +12,7 @@ Exposes dual-screen APIs for the Surface Duo to Unity game developers. You can a
 
 ## Prerequisites
 
-- Unity 2019.4.18f1
+- Unity 2020.3.14f1
 - Project settings for Android
 - Surface Duo device
 
