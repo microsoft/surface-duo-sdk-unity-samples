@@ -62,6 +62,12 @@ public class Button : MonoBehaviour
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 15, 200, 20), "-Window Manager-", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 16, 200, 20), "CurrentWindowMetrics:", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 17, 200, 20), "MaximumWindowMetrics:", localStyle);
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 18, 200, 20), "-FoldingFeature-", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 19, 200, 20), "IsSeparating:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 20, 200, 20), "Orientation:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 21, 200, 20), "OcclusionType:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 22, 200, 20), "State:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 23, 200, 20), "Bounds:", localStyle);
 
         localStyle.normal.textColor = Color.blue;
 
@@ -176,12 +182,63 @@ public class Button : MonoBehaviour
                 //GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 1000, 20), e.ToString(), localStyle);
                 Debug.LogWarning("WindowManagerHelper.GetCurrentWindowMetricsBounds: " + e);
             }
+
+
+            try
+            {
+                var isSeparating = WindowManagerHelper.IsSeparating();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 19, 200, 20), isSeparating.ToString(), localStyle);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("WindowManagerHelper.IsSeparating: " + e);
+            }
+
+            try
+            {
+                var orientation = WindowManagerHelper.Orientation();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 20, 200, 20), orientation, localStyle);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("WindowManagerHelper.Orientation: " + e);
+            }
+
+            try
+            {
+                var occlusionType = WindowManagerHelper.OcclusionType();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 21, 200, 20), occlusionType, localStyle);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("WindowManagerHelper.OcclusionType: " + e);
+            }
+
+            try
+            {
+                var state = WindowManagerHelper.State();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 22, 200, 20), state, localStyle);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("WindowManagerHelper.State: " + e);
+            }
+
+            try
+            {
+                var bounds = WindowManagerHelper.Bounds();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 23, 200, 20), bounds.ToString(), localStyle);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("WindowManagerHelper.Bounds: " + e);
+            }
             #endregion
         }
 #if UNITY_EDITOR
         else
         {
-            GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 400, 20), "(most dual-screen attributes have no value in editor)", localStyle);
+            GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 22, 400, 20), "(most dual-screen attributes have no value in editor)", localStyle);
         }
 #endif
     }
