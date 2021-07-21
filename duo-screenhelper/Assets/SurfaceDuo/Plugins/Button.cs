@@ -58,7 +58,11 @@ public class Button : MonoBehaviour
                                                                  // GetScreenRectangles returns two rows
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 12, 200, 20), "-Sensor-", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 13, 200, 20), "Hinge angle:", localStyle);
-        
+
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 15, 200, 20), "-Window Manager-", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 16, 200, 20), "CurrentWindowMetrics:", localStyle);
+        GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 17, 200, 20), "MaximumWindowMetrics:", localStyle);
+
         localStyle.normal.textColor = Color.blue;
 
         // These methods don't require a check for IsDualScreenDevice
@@ -155,11 +159,29 @@ public class Button : MonoBehaviour
             {
                 GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 13, 400, 20), $"Error creating hinge sensor reader", localStyle);
             }
+
+
+
+            #region Window Manager
+            try
+            {
+                var rect = WindowManagerHelper.GetCurrentWindowMetricsBounds();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 16, 200, 20), rect.ToString(), localStyle);
+
+                rect = WindowManagerHelper.GetMaximumWindowMetricsBounds();
+                GUI.Label(new Rect(COL_WIDTH, ROW_HEIGHT * 17, 200, 20), rect.ToString(), localStyle);
+            }
+            catch (System.Exception e)
+            {
+                //GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 1000, 20), e.ToString(), localStyle);
+                Debug.LogWarning("WindowManagerHelper.GetCurrentWindowMetricsBounds: " + e);
+            }
+            #endregion
         }
 #if UNITY_EDITOR
         else
         {
-            GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 15, 400, 20), "(most dual-screen attributes have no value in editor)", localStyle);
+            GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 18, 400, 20), "(most dual-screen attributes have no value in editor)", localStyle);
         }
 #endif
     }
