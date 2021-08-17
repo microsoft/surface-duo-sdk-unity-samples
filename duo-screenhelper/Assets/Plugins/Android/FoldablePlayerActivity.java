@@ -4,9 +4,11 @@ package com.microsoft.device.dualscreen.unity;
 
 import com.unity3d.player.UnityPlayerActivity;
 
-import androidx.window.FoldingFeature;
-import androidx.window.WindowLayoutInfo;
-import androidx.window.WindowManager;
+import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
+import androidx.window.layout.DisplayFeature;
+import androidx.window.layout.FoldingFeature;
+import androidx.window.layout.WindowInfoRepository;
+import androidx.window.layout.WindowLayoutInfo;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -25,34 +27,24 @@ public class FoldablePlayerActivity extends UnityPlayerActivity {
     FoldingFeature lastFoldingFeature = null;
 
     String TAG = "JWM";
-    WindowManager wm;
-    StateContainer stateContainer = new StateContainer();
+    WindowInfoRepositoryCallbackAdapter wir;
 
     protected void onCreate(Bundle savedInstanceState) {
         // call UnityPlayerActivity.onCreate()
         super.onCreate(savedInstanceState);
         // print debug message to logcat
         Log.d(TAG, "onCreate called!");
-        wm = new WindowManager(this);
+        wir = new WindowInfoRepositoryCallbackAdapter(
+                WindowInfoRepository.Companion.getOrCreate(
+                        this
+                )
+        );
         Log.d(TAG, "WindowManager created");
     }
     @Override
     protected void onStart() {
         super.onStart();
-        wm.registerLayoutChangeCallback(runOnUiThreadExecutor(), stateContainer);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        wm.unregisterLayoutChangeCallback(stateContainer);
-    }
-
-    class StateContainer implements Consumer<WindowLayoutInfo>
-    {
-        //WindowLayoutInfo lastLayoutInfo = null;
-        @Override
-        public void accept(WindowLayoutInfo newLayoutInfo) {
+        wir.addWindowLayoutInfoListener(runOnUiThreadExecutor(), (newLayoutInfo -> {
             lastLayoutInfo = newLayoutInfo;
             Log.d(TAG, "Feature " + newLayoutInfo.getDisplayFeatures().toString() );
 
@@ -67,7 +59,7 @@ public class FoldablePlayerActivity extends UnityPlayerActivity {
                     }
                 });
             }
-        }
+        }));
     }
 
     Executor runOnUiThreadExecutor()
