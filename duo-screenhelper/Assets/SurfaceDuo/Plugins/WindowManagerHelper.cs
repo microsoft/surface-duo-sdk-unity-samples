@@ -6,9 +6,9 @@ namespace Microsoft.Device.Display
 {
     public static class WindowManagerHelper
     {
-        static readonly string WINDOWMANAGERPROVIDER_CLASSNAME = "androidx.window.WindowManager";
+        static readonly string WINDOWMETRICSCALCULATORPROVIDER_CLASSNAME = "androidx.window.layout.WindowMetricsCalculator";
 
-        static AndroidJavaObject windowManagerObject = null;
+        static AndroidJavaObject windowMetricsCalculatorObject = null;
 
         static AndroidJavaObject foldablePlayerActivity = null;
 
@@ -20,23 +20,18 @@ namespace Microsoft.Device.Display
                 return p.GetStatic<AndroidJavaObject>("currentActivity");
             });            
 
-            windowManagerObject = OnPlayer.Run(p =>
-            {
-                var activity = p.GetStatic<AndroidJavaObject>("currentActivity");
-
-                return new AndroidJavaObject(WINDOWMANAGERPROVIDER_CLASSNAME, activity);
-            });
+            var staticCalcClass = new AndroidJavaClass(WINDOWMETRICSCALCULATORPROVIDER_CLASSNAME);
+            var staticCompanions = staticCalcClass.GetStatic<AndroidJavaObject>("Companion");
+            windowMetricsCalculatorObject= staticCalcClass.CallStatic<AndroidJavaObject>("getOrCreate");
 #endif
         }
 
         public static RectInt GetCurrentWindowMetricsBounds()
         {
-            if (windowManagerObject == null) return new RectInt(-1, -1, -1, -1);
+            if (windowMetricsCalculatorObject == null) return new RectInt(-1, -1, -1, -1);
 
-            var windowMetricsObject = windowManagerObject.Call<AndroidJavaObject>("getCurrentWindowMetrics");
+            var windowMetricsObject = windowMetricsCalculatorObject.Call<AndroidJavaObject>("computeCurrentWindowMetrics", foldablePlayerActivity);
             var rect = windowMetricsObject.Call<AndroidJavaObject>("getBounds");
-
-            Debug.LogWarning($"CurrentWindowMetricsBounds {rect}");
 
             if (rect == null)
             {
@@ -54,12 +49,12 @@ namespace Microsoft.Device.Display
 
         public static RectInt GetMaximumWindowMetricsBounds()
         {
-            if (windowManagerObject == null) return new RectInt(-1, -1, -1, -1);
+            if (windowMetricsCalculatorObject == null) return new RectInt(-1, -1, -1, -1);
 
-            var windowMetricsObject = windowManagerObject.Call<AndroidJavaObject>("getMaximumWindowMetrics");
+            var windowMetricsObject = windowMetricsCalculatorObject.Call<AndroidJavaObject>("computeMaximumWindowMetrics", foldablePlayerActivity);
             var rect = windowMetricsObject.Call<AndroidJavaObject>("getBounds");
 
-            Debug.LogWarning($"MaximumWindowMetricsBounds {rect}");
+            Debug.LogWarning($"computeMaximumWindowMetrics {rect}");
 
             if (rect == null)
             {
