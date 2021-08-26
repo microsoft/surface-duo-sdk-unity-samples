@@ -218,7 +218,7 @@ namespace Microsoft.Device.Display
                     var height = jRect.Call<int>("height");
 
                     rectangles[i] = new RectInt(left, top, width, height);
-                    Debug.LogWarning($"GetScreenRectangles [{i}]: {rectangles[i]}");
+//                    Debug.LogWarning($"GetScreenRectangles [{i}]: {rectangles[i]}");
                 }
                 return rectangles;
             }
@@ -304,8 +304,6 @@ namespace Microsoft.Device.Display
             var jrects = _displayMask.Call<AndroidJavaObject>("getBoundingRects");
             var size = jrects.Call<int>("size");
 
-            Debug.Log("BoundingRects size: " + size);
-
             var rects = new RectInt[size];
 
             for (int i = 0; i < size; i++)
@@ -327,8 +325,6 @@ namespace Microsoft.Device.Display
         {
             var jrects = _displayMask.Call<AndroidJavaObject>("getBoundingRectsForRotation", rotation);
             var size = jrects.Call<int>("size");
-
-            Debug.Log("BoundingRects size: " + size);
 
             var rects = new RectInt[size];
 

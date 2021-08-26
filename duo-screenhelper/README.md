@@ -26,6 +26,11 @@ Accessing the sensor requires an additional Android package. Build the [duo-andr
 
 ![Unity in Surface Duo emulator](Screenshots/06-unity-device-small.png)
 
+## Implementation details
+
+- [Extending UnityPlayerActivity](https://docs.unity3d.com/Manual/AndroidUnityPlayerActivity.html)
+- [Android Manifest](https://docs.unity3d.com/Manual/android-manifest.html)
+
 ## Next steps
 
 Follow the steps from [this blog post](https://devblogs.microsoft.com/surface-duo/dual-screen-games-with-unity-for-android) to implement a custom gradle file in your Unity project and add the C# script that will let you access the device APIs in your game!
