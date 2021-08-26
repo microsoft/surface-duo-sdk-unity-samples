@@ -18,6 +18,10 @@ Exposes dual-screen APIs for the Surface Duo to Unity game developers. You can a
 
 _^ Unity 2019.3 and later will [not deploy to x86-based Android emulators](https://blogs.unity3d.com/2019/03/05/android-support-update-64-bit-and-app-bundles-backported-to-2017-4-lts/) so a Surface Duo device is required for testing. Use an older commit of this repo that targets Unity 2018 for Surface Duo emulator support._
 
+### Dual-screen information
+
+Uses [Jetpack Window Manager beta01](https://developer.android.com/jetpack/androidx/releases/window#window-1.0.0-beta01) to surface folding feature information.
+
 ### Hinge angle sensor
 
 Accessing the sensor requires an additional Android package. Build the [duo-android-plugin](/microsoft/surface-duo-sdk-unity-samples/tree/master/duo-android-plugin) library project in this repo, and copy the **SurfaceDuoHingeSensorPlugin.jar** file from **/library/release/** into the Unity folder **/Assets/Plugins/Android/**.

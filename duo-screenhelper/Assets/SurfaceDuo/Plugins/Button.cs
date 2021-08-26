@@ -59,7 +59,7 @@ public class Button : MonoBehaviour
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 12, 200, 20), "-Sensor-", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 13, 200, 20), "Hinge angle:", localStyle);
 
-        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 15, 200, 20), "-Window Manager (alpha10)-", localStyle);
+        GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 15, 200, 20), "-Window Manager (beta01)-", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 16, 200, 20), "CurrentWindowMetrics:", localStyle);
         GUI.Label(new Rect(LEFT_MARGIN, ROW_HEIGHT * 17, 200, 20), "MaximumWindowMetrics:", localStyle);
         GUI.Label(new Rect(HEAD_INDENT, ROW_HEIGHT * 18, 200, 20), "-FoldingFeature-", localStyle);
