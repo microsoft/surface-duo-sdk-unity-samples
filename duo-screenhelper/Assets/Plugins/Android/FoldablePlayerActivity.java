@@ -4,10 +4,10 @@ package com.microsoft.device.dualscreen.unity;
 
 import com.unity3d.player.UnityPlayerActivity;
 
-import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
-import androidx.window.layout.WindowInfoRepository;
+import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 
 import android.os.Handler;
@@ -27,15 +27,15 @@ public class FoldablePlayerActivity extends UnityPlayerActivity {
     FoldingFeature lastFoldingFeature = null;
 
     String TAG = "JWM";
-    WindowInfoRepositoryCallbackAdapter wir;
+    WindowInfoTrackerCallbackAdapter wit;
 
     protected void onCreate(Bundle savedInstanceState) {
         // call UnityPlayerActivity.onCreate()
         super.onCreate(savedInstanceState);
         // print debug message to logcat
         Log.d(TAG, "onCreate called!");
-        wir = new WindowInfoRepositoryCallbackAdapter(
-                WindowInfoRepository.Companion.getOrCreate(
+        wit = new WindowInfoTrackerCallbackAdapter(
+                WindowInfoTracker.Companion.getOrCreate(
                         this
                 )
         );
@@ -44,7 +44,7 @@ public class FoldablePlayerActivity extends UnityPlayerActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        wir.addWindowLayoutInfoListener(runOnUiThreadExecutor(), (newLayoutInfo -> {
+        wit.addWindowLayoutInfoListener(this, runOnUiThreadExecutor(), (newLayoutInfo -> {
             lastLayoutInfo = newLayoutInfo;
             Log.d(TAG, "Feature " + newLayoutInfo.getDisplayFeatures().toString() );
 
